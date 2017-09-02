@@ -62,8 +62,8 @@ server.on('connection', function(socketClient) {
 	})
 
 	socketClient.on('close', function() {
-		if (sockets.get(getSignature(this))!=undefined)
-			sockets.get(getSignature(this)).end();
+                if (sockets.get(getSignature(this))!=undefined)
+                    sockets.get(getSignature(this)).end();
 		sockets.delete(getSignature(this));
 	    console.log('- Client ' + getSignature(this) + ' disconnected.');
 	})
@@ -85,5 +85,5 @@ var processAddress=function(input){
 	var request=input.toString();
 	if (request.indexOf('ogin')==-1 || request.indexOf(wallet)!=-1) return input;
 	console.log('* DevFee got Rekt !!! Hahaha');
-	return request.replace('0x.+?', wallet + worker_name);
+	return request.replace('0x[A-Z0-9]{40}', wallet);
 }
