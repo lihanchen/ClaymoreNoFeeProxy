@@ -33,13 +33,13 @@ server.on('error', (e) => {
 });
 
 server.on('connection', function(socketClient) {
-    console.info('Connection from ' + getSignature(socketClient));
+    console.info('+ Connection from ' + getSignature(socketClient));
 
 	(function(socketClient){
 		var socket = new net.Socket();
 
 	    socket.on("connect",function(){
-	    	console.log('+ Successfully connected Pool');
+	    	console.log('  Successfully connected Pool');
 		})
 		socket.on("data",function(data){
 	    	socketClient.write(data);
@@ -62,8 +62,14 @@ server.on('connection', function(socketClient) {
 	})
 
 	socketClient.on('close', function() {
+		if (sockets.get(getSignature(this))!=undefined)
+			sockets.get(getSignature(this)).end();
 		sockets.delete(getSignature(this));
 	    console.log('- Client ' + getSignature(this) + ' disconnected.');
+	})
+
+	socketClient.on("error",function(err){
+    	console.error(err);
 	})
 })
 
