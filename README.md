@@ -20,9 +20,9 @@ For example:
 nodejs claymore.js 0.0.0.0 8503 us2.ethermine.org 4444 0xB8B74585E5C2B42B013BF3de044a422D8919f516
 ```
 ## My test environment:
-Proxy running on AWS EC2 free instance, Ubuntu 16.04
-Pool: us2.ethermine.org. Trying ETH only and ETH+SC
-Mining machine: Two Ubuntu 16.04 and one Win10. ~100 MH/s
+- Proxy running on AWS EC2 free instance, Ubuntu 16.04
+- Pool: us2.ethermine.org. Trying ETH only and ETH+SC
+- Mining machine: Two Ubuntu 16.04 and one Win10. ~100 MH/s
 
 ## Donations
 If you find my proxy useful, welcome to donate.
