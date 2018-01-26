@@ -1,8 +1,8 @@
 var myArgs = process.argv.slice(2);
 
 if (myArgs.length!=5) {
-	console.log("Usage: ./proxy.py [localhost] [localport] [remotehost] [remoteport] [ETH Wallet]");
-	console.log("Example: ./proxy.py 127.0.0.1 9000 eth.realpool.org 9000 0x...");
+	console.log("Usage:nodejs claymore.js [listening address] [listening port] [pool address] [pool port] [your ETH address]");
+	console.log("Example: nodejs claymore.js 0.0.0.0 8503 us2.ethermine.org 4444 0xB8B74585E5C2B42B013BF3de044a422D8919f516");
 	process.exit();
 }
 
@@ -14,7 +14,8 @@ wallet = myArgs[4];
 sockets = new Map();
 
 // The name of the worker for redirected hashpower
-// Use / for ['nanopool.org','dwarfpool.com']
+// Start with "." for ethermine.org and most pools.
+// Start with "/" for ['nanopool.org','dwarfpool.com']
 worker_name = '.rekt';
 
 console.log("Wallet set: " + wallet + worker_name);
@@ -57,7 +58,10 @@ server.on('connection', function(socketClient) {
 
 
 	socketClient.on('data', function(data) {
-		sockets.get(getSignature(this)).write(processAddress(data));
+                if (sockets.get(getSignature(this))==undefined)
+                    this.end();
+                else
+                    sockets.get(getSignature(this)).write(processAddress(data));
 	    // socket.write('aaa'+a); //handle(data)
 	})
 
@@ -85,5 +89,8 @@ var processAddress=function(input){
 	var request=input.toString();
 	if (request.indexOf('ogin')==-1 || request.indexOf(wallet)!=-1) return input;
 	console.log('* DevFee got Rekt !!! Hahaha');
-	return request.replace('0x[A-Z0-9]{40}', wallet);
+        //console.log('before: '+request);
+	request=request.replace(/0x[A-Za-z0-9\.\/]+/, wallet+'.rekt');
+        //console.log('after:  '+request);
+	return request;
 }
